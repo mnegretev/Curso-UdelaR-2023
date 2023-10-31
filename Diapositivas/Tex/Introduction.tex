@@ -16,24 +16,24 @@
   \item Introducción y generalidades
     \begin{itemize}
     \item Componentes básicos de un robot móvil
-    \item Modelos tradicionales, reactivos e híbridos
     \item Herramientas de software para el desarrollo de robots móviles
     \end{itemize}
   \item Planeación de movimientos
     \begin{itemize}
     \item El problema de la planeación de movimientos
     \item Mapas geométricos y topológicos
-    \item Descomposición en celdas, celdas de ocupación y diagramas de Voronoi
+    \item Celdas de ocupación y diagramas de Voronoi
     \item Planeación de rutas mediante búsqueda en grafos
     \item Modelos cinemáticos: diferencial, omnidireccional, Ackermann
     \item Control de posición y seguimiento de trayectorias
-    \end{itemize}
-  \item Modelos reactivos
-    \begin{itemize}
-    \item Máquinas de estados finitas
     \item Campos potenciales artificiales
-    \item Navegación mediante redes neuronales
-    \item Navegación mediante algoritmos genéticos
+    \end{itemize}
+  \item Mapeo y localización
+    \begin{itemize}
+    \item Localización mediante filtro de Kalman extendido
+    \item Localización mediante filtros de partículas
+    \item Creación de mapas mediante agrupamiento
+    \item Localización y mapeo simultáneos
     \end{itemize}
   \end{enumerate}
 \end{frame}
@@ -41,39 +41,31 @@
 \begin{frame}\frametitle{Contenido}
   \begin{enumerate}
     \setcounter{enumi}{3}
-  \item Mapeo y localización
-    \begin{itemize}
-    \item Localización mediante Modelos Ocultos de Markov
-    \item Localización mediante filtros de partículas
-    \item Creación de mapas mediante agrupamiento
-    \item Localización y mapeo simultáneos
-    \end{itemize}
   \item Conceptos básicos de visión artificial
     \begin{itemize}
     \item Imágenes y espacios de color
     \item Operadores morfológicos
     \item Extracción de características geométricas
+    \item Reconocimiento mediante redes neuronales artificiales
+    \item Nubes de puntos
     \end{itemize}
   \item Conceptos básicos de manipulación
     \begin{itemize}
     \item Movimiento de cuerpo rígido
-    \item Cinemáticas directa e inversa
+    \item Cinemática directa
+    \item Cinemática inversa por métodos numéricos
     \item Planeación y seguimiento de trayectorias
+    \end{itemize}
+  \item Herramientas para la interacción humano-robot
+    \begin{itemize}
+    \item Síntesis de voz con la biblioteca Festival
+    \item Reconocimiento de voz con la biblioteca CMU Sphinx
+    \item Reconocimiento de gestos con la biblioteca OpenPose
     \end{itemize}
   \end{enumerate}
 \end{frame}
 
 \begin{frame}\frametitle{Contenido}
-  \begin{enumerate}
-    \setcounter{enumi}{6}
-  \item Herramientas para la interacción humano-robot
-    \begin{itemize}
-    \item El modelo fuente-filtro para síntesis de voz
-    \item Síntesis de voz con la biblioteca Festival
-    \item Reconocimiento de palabras aisladas
-    \item Reconocimiento de voz con la biblioteca CMU Sphinx
-    \end{itemize}
-  \end{enumerate}
   \textbf{Bibliografía recomendada:}
   \begin{itemize}
     \item \url{https://drive.google.com/drive/folders/1gb7VQJG5eUkCvCginRHHGn5lez6VASBJ?usp=sharing}

@@ -1,6 +1,3 @@
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-08-17 %%%%
-%%%%%%%%%%%%%%%%%%%
 \section{Introducción y generalidades (2023-08-17)}
 \begin{frame}\frametitle{Contexto y definiciones}
   \begin{itemize}
@@ -47,68 +44,3 @@
   Una explicación más detallada se puede encontrar en el Cap. 3 de \cite{choset2005principles}.
 \end{frame}
 
-\begin{frame}\frametitle{Primitivas de la robótica}
-Las tareas que puede llevar a cabo un robot se pueden clasificar en tres grandes conjuntos conocidos como primitivas de la robótica: sensar, planear y actuar.
-  \begin{itemize}
-  \item \textbf{Sensar: } extracción de información del ambiente interno o externo del robot.
-  \item \textbf{Planear: } generación de subtareas y toma decisiones a partir de la información de los sensores y/o de alguna Representación intenra del ambiente.
-  \item \textbf{Actuar: } modificación del ambiente con alguno de los dispositivos del robot. 
-  \end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Paradigmas de la robótica}
-  \textbf{Paradigma jerárquico.} Las tres primitivas se realizan en forma secuencial.
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.7\textwidth]{Figures/ParadigmHierarchical.pdf}
-  \end{figure}
-  \begin{itemize}
-  \item Fuerte dependencia de una representación interna del ambiente
-  \item Tiempo de respuesta lento comparado con el paradigma reactivo
-  \item Alto costo computacional
-  \item Se pueden resolver tareas con alto nivel cognitivo
-  \item Alta capacidad de predicción
-  \end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Paradigmas de la robótica}
-  \textbf{Paradigma reactivo.} El sensado y la actuación se conectan directamente sin que haya de por medio una planeación.
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figures/ParadigmReactive.pdf}
-  \end{figure}
-  \begin{itemize}
-  \item No requiere una representación interna del ambiente
-  \item Tiempo de respuesta rápido comparado con el paradigma jerárquico
-  \item Bajo costo computacional
-  \item En general, no se pueden resolver tareas con alto nivel cognitivo
-  \item Baja capacidad de predicción
-  \end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Paradigmas de la robótica}
-  \textbf{Paradigma híbrido.} Tiene como objetivo utilizar las ventajas de ambos paradigmas, es decir, emplear comportamientos reactivos para que el robot responda rápidamente ante cambios en el ambiente sin perder la alta capacidad cognitiva y de predicción que brinda el paradigma jerárquico
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figures/ParadigmHybrid.pdf}
-  \end{figure}
-\end{frame}
-
-\begin{frame}[containsverbatim]\frametitle{Tarea 1 - Herramientas de software}
-  \begin{enumerate}
-  \item Abrir cuenta en GitHub (si no se tiene) y enviar el nombre de usuario por correo electrónico. 
-  \item Instalar y correr el software del curso de acuerdo con las instrucciones del repositorio\\ \url{https://github.com/mnegretev/Mobile-Robots-2024-1} (se puede hacer una instalación nativa o usar la máquina virtual).
-  \item Abrir el archivo \texttt{Mobile-Robots-2024-1/catkin\_ws/src/hri/justina\_gui/src/MainWindow.ui} y modificar la línea 14 para que diga:
-    \begin{lstlisting}[language=html,firstnumber=14]
-      <string>Mobile Robots - NOMBRE COMPLETO</string>
-    \end{lstlisting}
-  \item Recompilar y ejecutar de acuerdo con las instrucciones del repositorio.
-  \end{enumerate}
-  \textbf{Entregables:}
-  \begin{itemize}
-  \item Código modificado en la rama correspondiente
-  \item Capturas de pantalla del visualizador RViz y del Simulador Gazebo corriendo el software del curso
-  \item Captura de pantalla de la GUI con la modificación del punto anterior. 
-  \end{itemize}
-  \textbf{Deadline: } 2023-08-24 al inicio de la clase. 
-\end{frame}

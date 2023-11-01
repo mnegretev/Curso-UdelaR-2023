@@ -242,37 +242,37 @@
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Práctica 01 - Representación del ambiente}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 2 - Representación del ambiente}
   \begin{enumerate}
-  \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/practice01a.py} e implemente el algoritmo de inflado de mapas (algoritmo \ref{alg:inflation}, diapositiva \ref{fr:inflation})
+  \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment02a.py} e implemente el algoritmo de inflado de mapas (algoritmo \ref{alg:inflation}, diapositiva \ref{fr:inflation})
   \item Abra una terminal y corra la simulación con el comando (revise las instrucciones en el README del repositorio):
 \begin{verbatim}
  roslaunch surge_et_ambula justina_gazebo.launch
 \end{verbatim}
-  \item En otra terminal, corra la práctica 01 con el comando:
+  \item En otra terminal, corra el ejercicio 2a con el comando:
 \begin{verbatim}
- rosrun students practice01a.py _inflation_radius:=0.2
+ rosrun students assignment02a.py _inflation_radius:=0.2
 \end{verbatim}
   \item Obseve lo que sucede en el visualizador RViz.
   \item Detenga la práctica y ejecútela de nuevo con radios de inflado diferentes, por ejemplo:
 \begin{verbatim}
- rosrun students practice01a.py _inflation_radius:=0.3
+ rosrun students assignment02a.py _inflation_radius:=0.3
 \end{verbatim}
 Observe qué sucede. ¿Qué pasa si el radio de inflado es muy grande o muy pequeño?
   \item En otra terminal, corra el algoritmo \textit{split and merge} con el comando:
 \begin{verbatim}
- rosrun students practice01b.py _dist:=0.01 _points:=3 _rho:=0.05 _theta:=0.05
+ rosrun students assignment02b.py _dist:=0.01 _points:=3 _rho:=0.05 _theta:=0.05
 \end{verbatim}
 \item Detenga la detección de líneas y ejecútela nuevamente con diferentes parámetros de sintonización. Con la GUI, mueva el robot a diferentes puntos del mapa para verificar la correcta sintonización de dicho parámetros.
   \end{enumerate}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Práctica 01 - Representación del ambiente}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 2 - Representación del ambiente}
     \begin{enumerate}
     \setcounter{enumi}{7}
   \item En otra terminal, corra el algoritmo \textit{Brushfire} para obtener un Diagrama de Voronoi Generalizado a partir del mapa inflado (la práctica 01a debe estar corriendo):
 \begin{verbatim}
- rosrun students practice01c.py
+ rosrun students assignment02c.py
 \end{verbatim}
 
   \item Detenga el GVD y abra el archivo \texttt{catkin\_ws/src/students/scripts/practice01c.py} y en las líneas 54 y 57 cambie la distancia Euclideana por distancia de Manhattan (revise los comentarios arriba de cada línea).
@@ -436,20 +436,6 @@ Observe qué sucede. ¿Qué pasa si el radio de inflado es muy grande o muy pequ
       \includegraphics[width=0.95\textwidth]{Figures/CostMap.png}
     \end{column}
   \end{columns}
-\end{frame}
-
-\begin{frame}[containsverbatim]\frametitle{Tarea 03 - Algoritmos de búsqueda}
-  Realice lo siguiente:
-  \begin{enumerate}
-  \item Investigar qué es una estructura de tipo Heap y qué aplicaciones tiene.
-  \item Inserte los siguientes elementos en una estructura de tipo Heap-Min: \{31, 41, 59, 26, 53, 58, 97, 93, 23, 84, 6\}
-  \item Investigue un algoritmo de búsqueda en grafos (diferente a BFS, DFS, Dijkstra y A*) y descríbalo brevemente. 
-  \end{enumerate}
-  \textbf{Entregables:}
-  \begin{itemize}
-  \item Documento escrito con los puntos anteriores. 
-  \end{itemize}
-  \textbf{Deadline: } 2023-09-05 al inicio de la clase. 
 \end{frame}
 
 

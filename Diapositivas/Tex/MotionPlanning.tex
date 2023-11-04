@@ -247,7 +247,7 @@
   \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment02a.py} e implemente el algoritmo de inflado de mapas (algoritmo \ref{alg:inflation}, diapositiva \ref{fr:inflation})
   \item Abra una terminal y corra la simulación con el comando (revise las instrucciones en el README del repositorio):
 \begin{verbatim}
- roslaunch surge_et_ambula justina_gazebo.launch
+ roslaunch bring_up path_planning.launch
 \end{verbatim}
   \item En otra terminal, corra el ejercicio 2a con el comando:
 \begin{verbatim}
@@ -270,27 +270,16 @@ Observe qué sucede. ¿Qué pasa si el radio de inflado es muy grande o muy pequ
 \begin{frame}[containsverbatim]\frametitle{Ejercicio 2 - Representación del ambiente}
     \begin{enumerate}
     \setcounter{enumi}{7}
-  \item En otra terminal, corra el algoritmo \textit{Brushfire} para obtener un Diagrama de Voronoi Generalizado a partir del mapa inflado (la práctica 01a debe estar corriendo):
+  \item En otra terminal, corra el algoritmo \textit{Brushfire} para obtener un Diagrama de Voronoi Generalizado a partir del mapa inflado (el ejercicio 02a debe estar corriendo):
 \begin{verbatim}
  rosrun students assignment02c.py
 \end{verbatim}
 
-  \item Detenga el GVD y abra el archivo \texttt{catkin\_ws/src/students/scripts/practice01c.py} y en las líneas 54 y 57 cambie la distancia Euclideana por distancia de Manhattan (revise los comentarios arriba de cada línea).
+  \item Detenga el GVD y abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment02c.py} y en las líneas 54 y 57 cambie la distancia Euclideana por distancia de Manhattan (revise los comentarios arriba de cada línea).
   \item Ejecute nuevamente la obtención del GVD y observe lo que sucede en el visualizador RViz
   \end{enumerate}
-
-  \textbf{Entregables:}
-  \begin{itemize}
-  \item Código modificado en la rama correspondiente del repositorio en línea (código para implementar el inflado de mapas, parámetros sintonizados del algoritmo split and merge y función de distancia modificada en el GVD). 
-  \item Reporte de práctica con las carácterísticas indicadas al inicio del curso (se evaluará con la rúbrica presentada al inicio del curso). 
-  \end{itemize}
-  \textbf{Deadline: } 2022-09-05 al inicio de la clase. 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-08-31 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Planeación de rutas (2023-08-31)}
 
 \begin{frame}\frametitle{Planeación de rutas}
   La planeación de rutas consiste en encontrar una secuencia de puntos $q\in Q_{free}$ que permitan al robot moverse desde una configuración inicial $q_{start}$ hasta una configuración final $q_{goal}$.
@@ -565,10 +554,10 @@ Observe qué sucede. ¿Qué pasa si el radio de inflado es muy grande o muy pequ
   \end{table}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Práctica 2 - Planeación de rutas}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 03 - Planeación de rutas}
   Realice lo siguiente:
   \begin{enumerate}
-     \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/practice02a.py} y agregue el siguiente código en la línea 45:
+     \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment03a.py} y agregue el siguiente código en la línea 45:
   \begin{lstlisting}[language=Python,firstnumber=45]
 for i in range(height):
     for j in range(width):
@@ -580,18 +569,18 @@ for i in range(height):
                   \end{lstlisting}
   \item Corra el simulador con el comando
 \begin{verbatim}
-    roslaunch surge_et_ambula justina_gazebo.launch
+    roslaunch bring_up path_planning.launch
 \end{verbatim}                  
   \item Corra los nodos de inflado de mapas, mapa de costo y A*, para ello, en tres terminales diferentes, corra los comandos:
 \begin{verbatim}
-    rosrun students practice01a.py _inflation_radius:=0.25
-    rosrun students practice02a.py _cost_radius:=0.3
-    rosrun students practice02b.py
+    rosrun students assignment02a.py _inflation_radius:=0.25
+    rosrun students assignment03a.py _cost_radius:=0.3
+    rosrun students assignment03b.py
 \end{verbatim}
   \end{enumerate}
 \end{frame}
 
-\begin{frame}\frametitle{Práctica 2 - Planeación de rutas}
+\begin{frame}\frametitle{Ejercicio 03 - Planeación de rutas}
   \begin{enumerate}
     \setcounter{enumi}{3}
   \item Calcule una ruta utilizando los campos Start Pose y Goal Pose de la GUI:
@@ -601,21 +590,11 @@ for i in range(height):
     \end{figure}
   \item Detenga y ejecute de nuevo el inflado de mapas con radios entre 0.1 y 0.5 m y vea qué sucede con el cálculo de rutas.
   \item Detenga y ejecute de nuevo el cálculo del mapa de costo con radios de entre 0.05 y 0.5 m y vea qué sucede con las rutas. 
-  \item En el archivo \texttt{practice02b.py}, cambie la función de distancia de Manhattan por distancia Euclideana, y cambie la conectividad 4 por conectividad 8 (líneas 44, 68 y 69) y vea qué sucede.
+  \item En el archivo \texttt{assignment03b.py}, cambie la función de distancia de Manhattan por distancia Euclideana, y cambie la conectividad 4 por conectividad 8 (líneas 44, 68 y 69) y vea qué sucede.
   \item Modifique el código para que $h$ sea siempre cero (línea 69) y vea qué sucede con el número de pasos. Pruebe con varias rutas. 
   \end{enumerate}
-  \textbf{Entregables:}
-  \begin{itemize}
-  \item Código modificado en la rama correspondiente del repositorio en línea.
-  \item Reporte de práctica con las carácterísticas indicadas al inicio del curso (se evaluará con la rúbrica presentada al inicio del curso). 
-  \end{itemize}
-  \textbf{Deadline: } 2023-09-12 al inicio de la clase. 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-09-07 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Seguimiento de rutas (2023-09-07)}
 \begin{frame}\frametitle{Seguimiento de rutas}
   Hasta el momento ya se tiene una representación del ambiente y una forma de planear rutas. Ahora falta diseñar las leyes de control que hagan que el robot se mueva por la ruta calculada. Este control se hará bajo los siguientes supuestos:
   \begin{itemize}
@@ -736,32 +715,6 @@ for i in range(height):
   
 \end{frame}
 
-\begin{frame}\frametitle{Tarea 04 - Modelos cinemáticos}
-  \begin{columns}
-    \begin{column}{0.45\textwidth}
-      Considere la base diferencial de la figura. Determine las velocidades lineal y angular $(v, \omega)$ si las velocidades de las llantas izquierda y derecha $(v_l, v_r)$ son $(0.1, 0.3)$ y $L=0.5$.
-      \begin{figure}
-        \centering
-        \includegraphics[width=0.5\textheight]{Figures/DifferentialBase.pdf}
-      \end{figure}
-    \end{column}
-    \begin{column}{0.45\textwidth}
-      Considere la base omnidireccional de la figura. Determine las velocidades $(v_x, v_y, \omega)$ del robot, si las velocidades de las llantas son $(v_1,v_2,v_3) = (0.2, -0.1, 0.3)$ y $L=0.5$.
-      \begin{figure}
-        \centering
-        \includegraphics[width=0.5\textheight]{Figures/Omnidirectional3wheels_b.pdf}
-      \end{figure}
-    \end{column}
-  \end{columns}
-  \[\]
-  \textbf{Deadline:} 2023-09-12
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-09-12 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Seguimiento de rutas (2023-09-12)}
-
 \begin{frame}\frametitle{Control de posición}
   \begin{itemize}
   \item Las leyes de control se diseñarán considerando una base diferencial
@@ -848,28 +801,18 @@ for i in range(height):
   \end{figure}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Tarea 05 - Seguimiento de rutas}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 04 - Seguimiento de rutas}
 Realice lo siguiente:
   \begin{enumerate}
   \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment05.py} e implemente las leyes de control para calcular $v$ y $\omega$ dentro de la función \texttt{calculate\_speeds}. Siga las instrucciones de los comentarios del código. 
-  \item Ejecute la simulación igual que en las prácticas anteriores. 
-  \item Ejecute el inflado de obstáculos, mapa de costo, algoritmo A* y seguimiento de rutas (\texttt{practice01a.py, practice02a.py, practice02b.py} y \texttt{assignment05.py})
+  \item Ejecute la simulación igual que en los ejercicios anteriores. 
+  \item Ejecute el inflado de obstáculos, mapa de costo, algoritmo A* y seguimiento de rutas (\texttt{assignment02a.py, assignment03a.py, assignment03b.py} y \texttt{assignment04.py})
   \item Con el botón \textit{2D Nav Goal} del visualizador \textit{RViz}, selecccione un punto meta en el mapa y observe qué sucede. 
   \item Pruebe con diferentes valores de $\alpha$ y $\beta$ hasta obtener un movimiento satisfactorio. 
   \end{enumerate}
-\[\]
-  \textbf{Entregables:}
-  \begin{itemize}
-  \item Código modificado en la rama correspondiente del repositorio en línea.
-  \end{itemize}
-  \textbf{Deadline: } 2023-09-14 al inicio de la clase. 
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-09-14 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Suavizado de rutas (2023-09-14)}
 \begin{frame}\frametitle{Suavizado de rutas}
   \begin{itemize}
   \item Puesto que las rutas se calcularon a partir de celdas de ocupación, están compuestas de esquinas.
@@ -980,10 +923,10 @@ El descenso del gradiente devuelve el mínimo local más cercano a la condición
 \end{algorithm}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Práctica 03 - Planeación y seguimiento de rutas}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Planeación y seguimiento de rutas}
   Realice lo siguiente:
   \begin{enumerate}
-     \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/practice03.py} y agregue el siguiente código en la línea 39:
+     \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment05.py} y agregue el siguiente código en la línea 39:
   \begin{lstlisting}[language=Python,firstnumber=39]
 nabla[0], nabla[-1] = 0, 0
 while numpy.linalg.norm(nabla) > tol*len(P) and steps < 100000:
@@ -992,38 +935,28 @@ while numpy.linalg.norm(nabla) > tol*len(P) and steps < 100000:
     P = P - epsilon*nabla
     steps += 1
   \end{lstlisting}
-  \item Corra la simulación igual en las prácticas anteriores. 
+  \item Corra la simulación igual en los ejercicios anteriores anteriores. 
   \item Corra los nodos de inflado de mapas, mapa de costo, A* y seguimiento de rutas.
   \item Corra el suavizado de rutas mediante el comando:
     \begin{verbatim}
-  rosrun students practice03.py _alpha:=0.9 _beta:=0.1
+  rosrun students assignment05.py _alpha:=0.9 _beta:=0.1
 \end{verbatim}
   \item En el visualizador, observe la diferencia entre la ruta original calculada con A* (en azul) y la ruta suavizada (en verde). 
   \end{enumerate}
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Práctica 03 - Planeación y seguimiento de rutas}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Planeación y seguimiento de rutas}
   \begin{enumerate}
     \setcounter{enumi}{5}
     \item Detenga el suavizado de rutas y vuelva a ejecutar con diferentes valores de $\alpha$ y $\beta$.
-  \item Detenga el suavizado de rutas y sintonice las constantes $\alpha$ y $\beta$ del control de posición (tarea 05) hasta que el robot siga muy de cerca la ruta calculada (no importa que tenga cambios abruptos de velocidad).
+  \item Detenga el suavizado de rutas y sintonice las constantes $\alpha$ y $\beta$ del control de posición (ejercicio 04) hasta que el robot siga muy de cerca la ruta calculada (no importa que tenga cambios abruptos de velocidad).
   \item Ejecute el suavizado de rutas y el control de posición con las constantes sintonizadas.
   \item Comente los resultados.
   \end{enumerate}
- \textbf{Entregables:}
-  \begin{itemize}
-  \item Código modificado en la rama correspondiente del repositorio en línea.
-  \item Documento escrito con los puntos indicados al inicio del semestre.
-  \end{itemize}
-  \textbf{Deadline: } 2023-09-26 al inicio de la clase. 
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-09-19 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Evasión de obstáculos (2023-09-19)}
 \begin{frame}\frametitle{Evasión de obstáculos}
   \begin{itemize}
   \item Hasta el momento se tiene una manera de representar el ambiente, planear una ruta y seguirla
@@ -1080,18 +1013,6 @@ while numpy.linalg.norm(nabla) > tol*len(P) and steps < 100000:
   \end{itemize}
 \end{frame}
 
-%% \begin{frame}\frametitle{Tarea 06 - Mínimos locales}
-%%   \begin{itemize}
-%%   \item Considere la siguiente figura:
-%%   \item Determine el punto $P_m=(x,y)$ en el que se producirá un mínimo local. Para el cálculo de las fuerzas repulsivas, considere los centroides de los obstáculos indicados en la figura.
-%%   \item Calcule las fuerzas atractiva y repulsiva para el punto $P_m$ para verificar que se cancelan y por lo tanto, se producirá un mínimo local.
-%%   \end{itemize}
-%% \end{frame}
-
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-09-21 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Evasión de obstáculos (2023-09-21)}
 
 \begin{frame}\frametitle{Evasión de obstáculos por campos potenciales}
   \begin{itemize}
@@ -1136,7 +1057,7 @@ $q \leftarrow q_s$\;
   \end{figure}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Tarea 06 - Evasión de obstáculos}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 06 - Evasión de obstáculos}
 Realice lo siguiente:
   \begin{enumerate}
   \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment06.py} y realice lo siguiente:
@@ -1162,19 +1083,6 @@ Realice lo siguiente:
   \end{enumerate}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Tarea06 - Evasión de obstáculos}
- \textbf{Entregables:}
-  \begin{itemize}
-  \item Código modificado en la rama correspondiente del repositorio en línea.
-  \item Documento escrito con los puntos indicados al inicio del semestre
-  \end{itemize}
-  \textbf{Deadline: } 2023-04-04 al inicio de la clase. 
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-03-28 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{2023-03-28}
 \begin{frame}\frametitle{Localización}
   El problema de la localización consiste en determinar la configuración $q$ del robot dada un mapa y un conjunto de lecturas de los sensores.
   \begin{itemize}

@@ -428,11 +428,6 @@ Observe qué sucede. ¿Qué pasa si el radio de inflado es muy grande o muy pequ
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-09-05 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{El algoritmo A* (2023-09-05)}
-
 \begin{frame}\frametitle{El algoritmo A*}
   \begin{itemize}
   \item Es un algoritmo completo, es decir, si la ruta existe, seguro la encontrará, y si no existe, lo indicará en tiempo finito.
@@ -712,7 +707,15 @@ for i in range(height):
 \end{frame}
 
 \begin{frame}\frametitle{Base \textit{Ackermann}}
-  
+  \begin{figure}
+    \centering
+    \includegraphics[height=0.5\textheight]{Figures/AckermannBase.pdf}
+  \end{figure}
+  \begin{eqnarray*}
+    \dot{x} &=& v\cos(\theta + \delta)\\
+    \dot{y} &=& v\sin(\theta + \delta)\\
+    \dot{\theta} &=& \frac{v}{L}\sin(\delta)
+  \end{eqnarray*}
 \end{frame}
 
 \begin{frame}\frametitle{Control de posición}
@@ -744,9 +747,6 @@ for i in range(height):
     \includegraphics[width=0.45\textwidth]{Figures/LinearSpeed.eps}
     \includegraphics[width=0.45\textwidth]{Figures/AngularSpeed.eps}
   \end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{Control de base omnidireccional}
 \end{frame}
 
 \begin{frame}\frametitle{Seguimiento de rutas}

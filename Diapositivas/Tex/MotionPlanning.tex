@@ -703,15 +703,26 @@ for i in range(height):
 \end{frame}
 
 \begin{frame}\frametitle{Base \textit{Ackermann}}
-  \begin{figure}
-    \centering
-    \includegraphics[height=0.5\textheight]{Figures/AckermannBase.pdf}
-  \end{figure}
-  \begin{eqnarray*}
-    \dot{x} &=& v\cos(\theta + \delta)\\
-    \dot{y} &=& v\sin(\theta + \delta)\\
-    \dot{\theta} &=& \frac{v}{L}\sin(\delta)
-  \end{eqnarray*}
+  \begin{columns}
+    \begin{column}{0.7\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[height=0.5\textheight]{Figures/AckermannBase.pdf}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.3\textwidth}
+      \begin{eqnarray*}
+        \dot{x} &=& v\cos(\theta + \delta)\\
+        \dot{y} &=& v\sin(\theta + \delta)\\
+        \dot{\theta} &=& \frac{v}{L}\sin(\delta)
+      \end{eqnarray*}
+    \end{column}
+  \end{columns}
+  \begin{itemize}
+  \item Es el modelo simplificado de un coche (en un auto real, $\delta$ no es la misma para cada llanta)
+  \item Las entradas de control son $(v,\delta)$, es decir, la acción del acelerador y el freno y el ángulo del volante
+  \item Las restricciones de movimiento se deben considerar para la planeación de rutas, ya que, por ejemplo, el auto no puede girar sobre su centro. 
+  \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Control de posición}
@@ -798,9 +809,19 @@ for i in range(height):
 \end{frame}
 
 \begin{frame}[containsverbatim]\frametitle{Ejercicio 04 - Seguimiento de rutas}
-Realice lo siguiente:
+  Realice lo siguiente:
   \begin{enumerate}
-  \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment05.py} e implemente las leyes de control para calcular $v$ y $\omega$ dentro de la función \texttt{calculate\_speeds}. Siga las instrucciones de los comentarios del código. 
+  \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment04.py} y agregue el siguiente código en la línea 45 para implementar las leyes de control:
+    \begin{lstlisting}[language=Python,firstnumber=45]
+    v_max = 0.5
+    w_max = 1.0
+    alpha = 0.1
+    beta  = 0.1
+    error_a = math.atan2(goal_y - robot_y, goal_x - robot_x) - robot_a
+    error_a = (error_a + math.pi)%(2*math.pi) - math.pi 
+    cmd_vel.linear.x  = v_max*math.exp(-error_a*error_a/alpha)
+    cmd_vel.angular.z = w_max*(2/(1 + math.exp(-error_a/beta)) - 1)
+  \end{lstlisting}
   \item Ejecute la simulación igual que en los ejercicios anteriores. 
   \item Ejecute el inflado de obstáculos, mapa de costo, algoritmo A* y seguimiento de rutas (\texttt{assignment02a.py, assignment03a.py, assignment03b.py} y \texttt{assignment04.py})
   \item Con el botón \textit{2D Nav Goal} del visualizador \textit{RViz}, selecccione un punto meta en el mapa y observe qué sucede. 
@@ -919,7 +940,7 @@ El descenso del gradiente devuelve el mínimo local más cercano a la condición
 \end{algorithm}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Planeación y seguimiento de rutas}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Suavizado y seguimiento de rutas}
   Realice lo siguiente:
   \begin{enumerate}
      \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment05.py} y agregue el siguiente código en la línea 39:
@@ -942,13 +963,12 @@ while numpy.linalg.norm(nabla) > tol*len(P) and steps < 100000:
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Planeación y seguimiento de rutas}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Suavizado y seguimiento de rutas}
   \begin{enumerate}
     \setcounter{enumi}{5}
-    \item Detenga el suavizado de rutas y vuelva a ejecutar con diferentes valores de $\alpha$ y $\beta$.
+  \item Detenga el suavizado de rutas y vuelva a ejecutar con diferentes valores de $\alpha$ y $\beta$.
   \item Detenga el suavizado de rutas y sintonice las constantes $\alpha$ y $\beta$ del control de posición (ejercicio 04) hasta que el robot siga muy de cerca la ruta calculada (no importa que tenga cambios abruptos de velocidad).
   \item Ejecute el suavizado de rutas y el control de posición con las constantes sintonizadas.
-  \item Comente los resultados.
   \end{enumerate}
 \end{frame}
 
@@ -1054,17 +1074,37 @@ $q \leftarrow q_s$\;
 \end{frame}
 
 \begin{frame}[containsverbatim]\frametitle{Ejercicio 06 - Evasión de obstáculos}
-Realice lo siguiente:
   \begin{enumerate}
   \item Abra el archivo \texttt{catkin\_ws/src/students/scripts/assignment06.py} y realice lo siguiente:
     \begin{enumerate}
-    \item En la función \texttt{calculate\_control} implemente el control de posición utilizado en la práctica 03
-    \item Implemente el cálculo de la fuerza atractiva en la función \texttt{attraction\_force}
+    \item En la función \texttt{calculate\_control} implemente el control utilizado en el ejercicio 04 (copy-paste)
+    \item Implemente el cálculo de la fuerza atractiva en la función \texttt{attraction\_force}:
+      \begin{lstlisting}[language=Python,firstnumber=65]
+zeta = 1.0
+force_x, force_y = robot_x - goal_x, robot_y - goal_y
+mag = math.sqrt(force_x**2 + force_y**2)
+return [zeta*force_x/mag, zeta*force_y/mag] if mag != 0 else [0,0]
+\end{lstlisting}
     \item En la función \texttt{rejection\_force}, implemente el cálculo de la fuerza repulsiva total
       \[F_{rej} = \frac{1}{N}\sum_{i=1}^N F_{rej_i}(q)\]
-      Considere que dada lectura del láser es un obstáculo, como se explicó anteriormente.
-    \item En la función \texttt{callback\_pot\_fields\_goal} implemente el descenso del gradiente para mover el robot hacia el punto meta mediante campos potenciales artificiales. Revise los comentarios en el archivo. 
-    \end{enumerate}
+      Considere que dada lectura del láser es un obstáculo, como se explicó anteriormente:
+      \begin{lstlisting}[language=Python,firstnumber=65]
+d0  = 1.0
+eta = 4.0  
+[force_x, force_y] = [0,0]
+for [d,theta] in laser_readings:
+    mag = 0 if d >= d0 or d <= 0 else eta*math.sqrt(1/d - 1/d0)
+    force_x += mag*math.cos(robot_a + theta)
+    force_y += mag*math.sin(robot_a + theta)
+return [force_x/len(laser_readings), force_y/len(laser_readings)]
+  \end{lstlisting}
+\end{enumerate}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 06 - Evasión de obstáculos}
+  \begin{enumerate}    
+\setcounter{enumi}{7}
   \item Ejecute la simulación con el comando
     \begin{verbatim}
    roslaunch surge_et_ambula obstacle_avoidance.launch
@@ -1078,6 +1118,7 @@ Realice lo siguiente:
   \item Pruebe con diferentes constantes de sintonización y observer los cambios en el comportamiento. 
   \end{enumerate}
 \end{frame}
+
 
 \begin{frame}\frametitle{Localización}
   El problema de la localización consiste en determinar la configuración $q$ del robot dada un mapa y un conjunto de lecturas de los sensores.

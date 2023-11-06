@@ -62,10 +62,8 @@ def attraction_force(robot_x, robot_y, goal_x, goal_y):
     # where force_x and force_y are the X and Y components
     # of the resulting attraction force w.r.t. map.
     #
-    zeta = 1.0
-    force_x, force_y = robot_x - goal_x, robot_y - goal_y
-    mag = math.sqrt(force_x**2 + force_y**2)
-    return [zeta*force_x/mag, zeta*force_y/mag] if mag != 0 else  [0,0]
+    
+    return [0,0]
 
 def rejection_force(robot_x, robot_y, robot_a, laser_readings):
     #
@@ -80,14 +78,8 @@ def rejection_force(robot_x, robot_y, robot_a, laser_readings):
     # of the resulting rejection force w.r.t. MAP.
     # WARNING: Some laser readings could have distance=0 due to simulated reading errors. 
     #
-    d0  = 1.0
-    eta = 4.0  
-    [force_x, force_y] = [0,0]
-    for [d,theta] in laser_readings:
-        mag = 0 if d >= d0 or d <= 0 else eta*math.sqrt(1/d - 1/d0)
-        force_x += mag*math.cos(robot_a + theta)
-        force_y += mag*math.sin(robot_a + theta)
-    return [force_x/len(laser_readings), force_y/len(laser_readings)]
+    
+    return [0,0]
 
 def callback_pot_fields_goal(msg):
     goal_x = msg.pose.position.x
@@ -98,7 +90,7 @@ def callback_pot_fields_goal(msg):
 
     #
     # TODO:
-    # Move the robot towards goal point using potential fields.
+    # Review the code to move the robot towards goal point using potential fields.
     # Remember goal point is a local minimun in the potential field, thus,
     # it can be reached by the gradient descend algorithm.
     # Sum of attraction and rejection forces is the gradient of the potential field,

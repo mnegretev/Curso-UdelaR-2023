@@ -1,8 +1,4 @@
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-04-25 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Concetos de visión computacional (2023-04-25)}
-
+\section{Visión artificial}
 
 \begin{frame}\frametitle{¿Qué es la visión computacional?}
   \begin{itemize}
@@ -121,7 +117,32 @@ La computación con imágenes tiene mas de 30 años, sin embargo, en los último
 \end{enumerate}
 \end{frame}
 
-\section[Proc Imágenes]{Procesamiento de Imágenes}
+\begin{frame}\frametitle{OpenCV}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{Figures/OpenCVLogo.png}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      OpenCV es una biblioteca libre de visión artificial, originalmente desarrollada por Intel.
+      
+      Programación en código  Python, C y C++
+      
+      Existen versiones para GNU/Linux, Mac OS X y Windows
+    \end{column}
+    \end{columns}
+    \end{frame}
+
+\begin{frame}\frametitle{OpenCV}
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.75\textwidth]{Figures/OpenCVOverview.png}
+\end{figure}
+\end{frame}
+
+
 \begin{frame}\frametitle{Imágenes como funciones}
   \begin{itemize}
   \item Una imagen (en escala de grises) es una función $I(x,y)$ donde $x,y$ son variables discretas en coordenadas de imagen y la función $I$ es intensidad luminosa.
@@ -153,7 +174,6 @@ La computación con imágenes tiene mas de 30 años, sin embargo, en los último
   \item Suma y Resta 
   \item Multiplicación
   \end{itemize}
-  Ver ejercicios en Python.
 \end{frame}
 
 \begin{frame}\frametitle{Tipos de ruido}
@@ -163,9 +183,8 @@ La computación con imágenes tiene mas de 30 años, sin embargo, en los último
   \begin{itemize}
   \item Sal y pimienta: aleatoriamente aparecen puntos ya sea blancos o negros
   \item Ruido de impulso: aleatoriamente aparecen puntos blancos
-  \item Ruido gausiano: $\eta(x,y)$ se distribuye 
+  \item Ruido gausiano: $\eta(x,y)$ se distribuye normalmente
   \end{itemize}
-  Ver ejercicios en Python
 \end{frame}
 
 % \begin{frame}\frametitle{Tarea 11 - Herramientas de visión artificial}
@@ -247,37 +266,20 @@ La computación con imágenes tiene mas de 30 años, sin embargo, en los último
   Son útiles para determinar la posición en el espacio de los objetos reconocidos. 
 \end{frame}
 
-\begin{frame}\frametitle{OpenCV}
-  \begin{itemize}
-  \item OpenCV es un conjunto de bibliotecas que facilita la implementación de algoritmos de visión computacional.
-  \item Se puede usar con diversos lenguajes: C++, Python, Java.
-  \item En Python utiliza la biblioteca Numpy.
-  \item Las imágenes se representan como matrices donde cada elemento puede ser un solo valor, o bien tres valores, dependiendo de si la imagen está en escala de grises o a color.
-  \item La configuración más común es que cada pixel esté representado por tres bytes.
-  \item Las nubes de puntos se representan también como matrices donde cada elemento es una terna de flotantes con la posición $(x,y,z)$.
-  \end{itemize}
-\end{frame}
-
 \begin{frame}\frametitle{Segmentación por color}
   La segmentación de una imagen se refiere a obtener regiones significativas con ciertas características. En este caso, la característica es que estén en un cierto intervalo de color. Los pasos generales para esto son:
   \begin{enumerate}
   \item Transformación de la imagen del espacio BGR al HSV (función \texttt{cvtColor})
   \item Obtención de aquellos pixeles que están en un rango de color (función \texttt{inRange})
-%  \item Eliminación de \textit{outliers}, generalmente con operadores morfológicos (funciones \texttt{erode} y \texttt{dilate})
+  \item Eliminación de \textit{outliers}, generalmente con operadores morfológicos (funciones \texttt{erode} y \texttt{dilate})
   \item Obtención del centroide de la región (funciones \texttt{findNonZero} y \texttt{mean})
   \item Si se dispone de una nube de puntos, se puede obtener la posición $(x,y,z)$ del centroide de la región segementada. 
   \end{enumerate}
 \end{frame}
 
-\begin{frame}\frametitle{Práctica 06 - Segmentación por color}
+\begin{frame}\frametitle{Ejercicio 08 - Segmentación por color}
   \begin{enumerate}
-  % \item Investigar los siguientes conceptos:
-  %   \begin{itemize}
-  %   \item Espacios de color RGB y HSV
-  %   \item Segmentación de imágenes
-  %   \item Nubes de puntos
-  %   \end{itemize}
-  \item En el archivo \texttt{catkin\_ws/src/students/scripts/practice06.py}, en la función \texttt{segment\_by\_color}, realice lo siguiente:
+  \item En el archivo \texttt{catkin\_ws/src/students/scripts/assignment08.py}, en la función \texttt{segment\_by\_color}, realice lo siguiente:
     \begin{enumerate}
     \item Defina dos límites superiores y dos límites inferiores, en el espacio de color HSV, para segmentar las latas que se encuentran sobre el escritorio simulado.
     \item Transforme la imagen del espacio BGR al espacio HSV mediante la función \texttt{cvtColor} de OpenCV.
@@ -286,18 +288,316 @@ La computación con imágenes tiene mas de 30 años, sin embargo, en los último
     \item Utilizando los índices anteriores y la nube de puntos, determine el centroide del objeto con el color seleccionado. 
     \end{enumerate}
   \item Ejecute la simulación con el comando \texttt{roslaunch bring\_up color\_segmentation.launch }
-  \item Ejecute la práctica con el comando \texttt{rosrun students practice06.py}
+  \item Ejecute la práctica con el comando \texttt{rosrun students assignment08.py}
   \item En la pestaña \textit{Simple Tasks} de la GUI, en el campo \textit{Find Object} teclee \texttt{pringles} o \texttt{drink}
   \item En el visualizador debe dibujarse una esfera morada sobre el centro del objeto seleccionado. 
   \end{enumerate}
 \end{frame}
 
-\begin{frame}\frametitle{Práctica 06 - Segmentación por color}
- \textbf{Entregables:}
+\begin{frame}\frametitle{SLID}
+  Un sistema $S$ es un mapeo del conjunto de señales al conjunto de señales, es decir, es algo donde entra una señal $I(x,y)$ y sale otra señal $O(x,y)$:
+  \[O(x,y) = S[I(x,y)]\]
+  Los sistemas lineales invariantes ante el desfase son sistemas en los que se cumplen las siguientes propiedades:
   \begin{itemize}
-  \item Código modificado en la rama correspondiente del repositorio en línea.
-  \item Documento escrito con los puntos indicados al inicio del semestre
+  \item \textbf{Aditividad y homogeneidad:}
+    \[S[\alpha I_1(x,y) + \beta I_2(x,y)] = \alpha S[I_1(x,y)] + \beta S[I_2(x,y)]\]
+  \item \textbf{Invarianza ante el desfase:}
+    \[\textrm{Si} \qquad S[I(x,y)] = O(x,y) \qquad\textrm{entonces:}\]
+    \[S[I(x-i, y-j)] = O(x-i, y-j) \qquad \forall i,j \in \mathbb{Z}\]
   \end{itemize}
-  \textbf{Deadline: } 2023-05-16 al inicio de la clase. 
+  Los SLID se pueden caracterizar de varias formas:
+  \begin{itemize}
+  \item Ecuaciones en diferencias
+  \item Funciones de transferencia
+  \item Respuesta al impulso
+  \end{itemize}
 \end{frame}
 
+\begin{frame}\frametitle{Convolución}
+  Si se conoce la respuesta al impulso $H(x,y)$ de un sistema SLID, se puede obtener la salida $O(x,y)$ ante cualquier entrada $I(x,y)$, mediante la convolución, definida como:
+  \[O(x,y) = I(x,y)*H(x,y) = \sum_{i=-\infty}^\infty \sum_{j=-\infty}^\infty I(i,j)H(x-i, y-j)\]
+  Ejemplos:
+  \[\left[\begin{tabular}{cccc}
+      3 & 1 & 4 & 1\\
+      5 & 9 & 2 & 6\\
+      5 & 3 & 5 & 8\\
+      9 & 7 & 9 &3
+    \end{tabular}\right]* [1\quad -1] =
+  \left[\begin{tabular}{ccccc}
+      3 & -2 & 3 & -3 & -1\\
+      5 & 4 & -7 & 4 & -6\\
+      5 & -2 & 2 & 3 & -8\\
+      9 & -2 & 2 & -6 & -3
+    \end{tabular}\right]\]
+
+  \[\left[\begin{tabular}{cccc}
+      3 & 1 & 4 & 1\\
+      5 & 9 & 2 & 6\\
+      5 & 3 & 5 & 8\\
+      9 & 7 & 9 &3
+    \end{tabular}\right]* \left[\begin{tabular}{c}1 \\ -1\end{tabular}\right] =
+  \left[\begin{tabular}{cccc}
+      3 & 1 & 4 & 1\\
+      2 & 8 & -2 & 5\\
+      0 & -6 & 3 & 2\\
+      4 & 4 & 4 & -5\\
+      -9 & -7 & -9 & -3
+    \end{tabular}\right]\]
+\end{frame}
+
+\begin{frame}\frametitle{Manejo de bordes}
+  En el ejemplo anterior, supusimos que fuera de la matriz, todos los elementos son cero. Sin embargo existen otras formas de manejar los borde:
+  \begin{itemize}
+  \item Recortar: suponer que fuera de la matriz los valores son cero. En el caso de una imagen, suponemos pixeles negros fuera de la imagen.
+  \item Wrap around: suponer que la imagen es periódica.
+  \item Borde repetido: suponer que los valores de los bordes se mantienen iguales fuera de la imagen.
+  \item Reflexión: fuera de los bordes se tiene una imagen en espejo.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Propiedades de la convolución}
+  \begin{itemize}
+  \item Es conmutativa: $H*I = I*H$
+  \item Es asociativa: $H*I_1*I_2$ = $H*(I_1*I_2)$ = $(H*I_1)*I_2$
+  \item Es distributiva: $H*(I_1 + I_2) = H*I_1 + H*I_2$
+  \item Es lineal: $H*(\alpha I_1 + \beta I_2) = \alpha H*I_1 + \beta H*I_2$
+  \end{itemize}
+  En el caso de secuencias finitas bidimensionales:
+  \begin{itemize}
+  \item Si $I\in\mathbb{R}^{r_1\times c_1}$ y $H\in\mathbb{R}^{r_2\times c_2}$, entonces $(I*H) \in \mathbb{R}^{(r_1+r_2-1)\times (c_1 + c_2 - 1)}$
+  \item Si $I\in\mathbb{R}^{r_1\times c_1}$ y $H\in\mathbb{R}^{r_2\times c_2}$, la complejidad de la convolución es del orden de $r_1 r_2 c_1 c_2$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Conexión de sistemas SLID}
+  Dos o más SLID se pueden conectar de dos formas distintas:
+  \begin{itemize}
+  \item Conexión en paralelo:
+    \begin{figure}
+      \centering
+      \includegraphics[scale=0.7]{Figures/SLIDParallel.pdf}
+    \end{figure}
+  \item Conexión en cascada:
+    \begin{figure}
+      \centering
+      \includegraphics[scale=0.7]{Figures/SLIDCascade.pdf}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Gradiente}
+  El gradiente de una imagen está definido como:
+  \[\nabla I = \left[\frac{\partial I}{\partial x}, \frac{\partial I}{\partial y}\right]\]
+  Las derivadas parciales se puede aproximar mediante diferencias finitas:
+  \begin{eqnarray*}
+    \frac{\partial I}{\partial x} &=& \lim_{\Delta x \rightarrow 0}\frac{I(x + \Delta x, y) - I(x,y)}{\Delta x}\approx I_{i,j} - I_{i,j-1}\\
+    \frac{\partial I}{\partial y} &=& \lim_{\Delta y \rightarrow 0}\frac{I(x, y + \Delta y) - I(x,y)}{\Delta y}\approx I_{i,j} - I_{i-i,j}
+  \end{eqnarray*}
+  donde $(i,j)$ representan las coordenadas de imagen renglón-columna. Estas diferencias finitas se puede obtener mediante una convolución:
+  \begin{eqnarray*}
+    \frac{\partial I}{\partial x} &\approx& I * [1\quad -1]\\
+    \frac{\partial I}{\partial y} &\approx& I * \left[\begin{tabular}{c}1\\-1\end{tabular}\right]
+  \end{eqnarray*}
+\end{frame}
+
+\begin{frame}\frametitle{Gradiente}
+  Una mejor aproximación de la derivada es no solo tomar la diferencia entre el valor actual y el anterior $(I_{i,j} - I_{i-1,j})$, sino promediarlo con la diferencia $(I_{i+1,j} - I_{i,j})$:
+  \[\frac{1}{2}[(I_{i,j} - I_{i-1,j}) + (I_{i+1,j} - I_{i,j})] = \frac{1}{2}(I_{i+1,j} - I_{i-1,j})\]
+  Generalmente se ignora el coeficiente y se utilizan los siguientes Kernels:
+  \begin{eqnarray*}
+    \frac{\partial I}{\partial x} &\approx& I * [1\quad 0\quad -1]\\
+    \frac{\partial I}{\partial y} &\approx& I * \left[\begin{tabular}{c}1\\ 0\\-1\end{tabular}\right]
+  \end{eqnarray*}
+\end{frame}
+
+\begin{frame}\frametitle{El filtro de Sobel}
+  El Operador de Sobel o Filtro de Sobel consiste en un Kernel que permite obtener las derivadas parciales, aproximadas por diferencias finitas, y promediadas con un filtro Gaussiano:
+  \includegraphics[width=\textwidth]{Figures/SobelX1.pdf}
+  Se realiza un proceso similar para la derivada parcial en $Y$. Aplicando la propiedad asociativa de la convolución, se obtienen los siguientes ekernels:
+  \[S_x = \left[\begin{tabular}{ccc}1 & 0 & -1\\2 & 0 & -2\\1 & 0 & -1 \end{tabular}\right]\qquad\qquad
+  S_y = \left[\begin{tabular}{ccc}1 & 2 & 1\\0 & 0 & 0\\-1 & -2 & -1 \end{tabular}\right]\]
+\end{frame}
+
+\begin{frame}\frametitle{Ejemplo}
+\end{frame}
+
+\begin{frame}\frametitle{Magnitud y Ángulo}
+  El gradiente en cada pixel de la imagen se puede calcular mediante la approximación de las derivadas parciales:
+  \begin{eqnarray*}
+    \frac{\partial I}{\partial x} &\approx& I * Sx = G_x\\
+    \frac{\partial I}{\partial y} &\approx& I * Sy = G_y\\
+  \end{eqnarray*}
+  En la mayoría de las aplicaciones es más últil expresar el gradiente en forma polar:
+  \[ \nabla I = G_m \angle G_a \]
+  Donde la magnitud del gradiente y la fase, para cada pixel, se calculan como:
+  \begin{eqnarray*}
+    G_{m_{i,j}} &=& \sqrt{G_{x_{i,j}}^2 + G_{y_{i,j}}^2}\\
+    G_{a_{i,j}} &=& \atantwo(G_{y_{i,j}}, G_{y_{i,j}})\\
+  \end{eqnarray*}
+\end{frame}
+
+\begin{frame}\frametitle{Detector de Bordes de Canny}
+  El detector de bordes de Canny es un detector basado en gradiente que consta de los siguientes pasos básicos:
+  \begin{enumerate}
+  \item Obtención del gradiente en magnitud y ángulo, mediante operadores de Sobel
+  \item Supresión de puntos no máximos
+  \item Aplicación de un doble umbral
+  \end{enumerate}
+  Aunque no es un paso en sí del Detector de Canny, generalmente se considera como primer paso la aplicación de un filtro Gaussiano para disminuir el ruido. 
+\end{frame}
+
+\begin{frame}\frametitle{Obtención del gradiente}
+  Después del filtro Gaussiano, el primer paso es obtener el gradiente de la imagen mediante el Filtro de Sobel, en la forma de magnitud y ángulo:\\
+  \includegraphics[width=0.9\textwidth]{Figures/SobelXY.pdf}
+\end{frame}
+
+\begin{frame}\frametitle{Supresión de no máximos}
+  Este paso consiste en comparar la magnitud de cada pixel, con los pixeles anterior y posterior en la dirección del gradiente.
+  Aunque la fase es un ángulo en $[-\pi, \pi]$, la dirección del gradiente se debe redondear a algún valor correspondiente a la connectividad 8: \textit{N, NE, E, SE}. Debido a que el pixel se compara en la dirección positiva y negativa del gradiente, no es necesario considerar las direcciones \textit{S, SW, W, NW}.
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/SobelMA.pdf}
+  \end{figure}
+  Para cada pixel $p_i$, considere $p_{i+1}$, el pixel siguiente en la dirección del gradiente, y $p_{i-1}$, el pixel anterior, en la dirección del gradiente. El valor para cada pixel $q_i$ en la imagen resultante es:
+  
+  \[q_i = \begin{cases}p_i\qquad\qquad\textrm{si}\qquad p_i > p_{i+1} \qquad\textrm{y}\qquad p_i > p_{i-1}\\
+  0\qquad\qquad\textrm{en otro caso}\end{cases}\]
+\end{frame}
+
+\begin{frame}\frametitle{Aplicación de doble umbral}
+  En este paso, se definen dos umbrales: superior $\theta_u$ e inferior $\theta_l$. Los pixeles se clasifican en tres tipos:
+  \begin{itemize}
+  \item Fuertes: pixeles con magnitud del gradiente mayor que el umbral superior $|\nabla | > \theta_u$
+  \item Débiles: pixeles con magnitud del gradiente entre ambos umbrales $\theta_l < |\nabla| < \theta_u$
+  \item Suprimidos: pixeles con magnitud del gradiente menor que el umbral inferior $|\nabla| < \theta_l$
+  \end{itemize}
+  La imagen resultante se forma con las siguientes reglas:
+  \begin{itemize}
+  \item Todos los pixeles fuertes son parte de un borde.
+  \item Todos los pixeles suprimidos no son bordes. 
+  \item Los pixeles débiles son parte de un borde solo si están conectados (en conectividad 8) con un pixel fuerte.
+  \end{itemize}
+  \includegraphics[width=\textwidth]{Figures/CannyDoubleThreshold.pdf}
+\end{frame}
+
+\begin{frame}\frametitle{Extracción de características}
+  \begin{itemize}
+  \item Las \textit{características} (\textit{features}) son conjuntos de valores derivados de una señal o de un conjunto de mediciones, que permiten describir el conjunto original y que son informativos y no redundantes.
+  \item   Unas de las características más simples que se pueden extraer de una imagen son líneas y otras formas geométricas simples.
+  \item El vector de características que describe una línea puede ser el conjunto de parámetros de su ecuación.
+  \item Los vectores de características también se pueden utilizar para reconocer objetos, usando características cmo color, tamaño, forma, volumen, entre otras.
+   \item Más adelante se verá la Transformada SIFT, uno de los algoritmos más usados para extracción de características. 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{La Transformada Hough}
+  La Transformada Hough es un método que permite encontrar líneas, círculos y otras formas geométricas que se puedan describir fácilmente mediante expresiones analíticas. En el caso de las líneas, se trata de encontrar los dos parámetros que describen la recta:
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \includegraphics[width=\textwidth]{Figures/Hough2.pdf}
+    \end{column}
+    \begin{column}{0.6\textwidth}
+      \begin{itemize}
+      \item La forma pendiente-ordenada $y = mx + b$ tiene la desventaja de no poder expresar líneas verticales.
+      \item La forma canónica $Ax + By + C$ requiere de una normalización $A_1 x + B_1 y + 1 = 0$ para que solo sean dos parámetros.
+      \item Una forma más conveniente, es la forma normal $d = x\cos\theta + y\sin\theta$
+      \item Esta última forma tiene una ventaja: si la línea correponde a un borde, el ángulo $\theta$ será la dirección del gradiente. 
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}\frametitle{El Espacio de Hough}
+  El Espacio de Hough, para el caso de las líneas, es el conjunto de todos los posibles pares $(\theta, d)$.
+  \begin{itemize}
+  \item Una recta $L$ en el espacio cartesiano corresponde a un punto $P_h$ en el Espacio de Hough
+  \item Un punto $P_c$ en el espacio cartesiano corresponde a una curva $C$ en el Espacio de Hough. Esta curva representa los parámetros $(\theta_i, d_i)$ de todas las rectas $L_i$ que pasan por el punto $P$.
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.35\textwidth]{Figures/Hough1.pdf}
+    \includegraphics[width=0.5\textwidth]{Figures/Hough1.eps}
+  \end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Extracción de Líneas por Transformada Hough}
+  Este método consiste en encontrar las curvas $C_i$ en el espacio de Hough que pasan por cada punto $P_c$ en el espacio cartesiano. Los puntos $P_h$ en el Espacio de Hough por donde pasen más curvas $C_i$ corresponderán a las rectas resultantes en el espacio cartesiano.
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.35\textwidth]{Figures/Hough1.pdf}
+    \includegraphics[width=0.5\textwidth]{Figures/Hough1.eps}
+  \end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Extracción de Líneas por Transformada Hough}
+  \begin{algorithm}[H]
+    \KwIn{Imagen binaria $M$, umbral mínimo de votos $a_{min}$}
+    \KwOut{Líneas expresadas en la forma $(d,\theta)$}
+    \DontPrintSemicolon
+    \;
+    Inicializar en 0 un conjunto $A$ de acumuladores para cada par cuantizado $(d_k,\theta_k)$\;
+    \ForAll{Pixel $M[i,j] \neq 0$}
+    {
+      \ForAll{Ángulo $\theta_k$ cuantizdo}
+      {
+        $d = j\cos\theta_k + i\sin\theta_k$
+        $d_k = $ valor cuantizado de $d$
+        Incrementar en uno el acumulador correspondiente $A[d_k, \theta_k]$
+      }
+    }
+    \ForAll{$a \in A$}
+    {
+      \If{$a > a_{min}$}
+      {
+        Agregar la línea $(d_k, \theta_k)$ al conjunto de líneas detectadas
+      }
+    }
+    Devolver el conjunto de líneas detectadas
+  \end{algorithm}
+\end{frame}
+
+\begin{frame}\frametitle{Extracción de círculos por T. Hough}
+  De la ecuación de un círculo en el plano:
+  \[(x - c_x)^2 + (y - c_y)^2 = r^2\]
+  Se puede observar que un círculo está definido por tres parámetros $(c_x, c_y, r)$.
+  \begin{itemize}
+  \item De forma similar a las líneas, se podrían fijar dos parámetros y calcular el tercero
+  \item Sin embargo variar dos parámetros incrementa la complejidad considerablemente
+  \item Se puede utilizar el ángulo del gradiente y un variar el valor del radio $r$ para determinar el centro, de este modo, solo se tiene que variar un parámetro.
+  \item Se considera que el gradiente apunta hacia el centro del círculo. 
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}\frametitle{Detección de esquinas}
+  Una esquina se puede considerar como un punto donde, en una vecindad $W$, el gradiente tiene dos direcciones dominantes diferentes.
+  \begin{itemize}
+  \item Aunque las esquinas representan un porcentaje muy pequeño de la imagen, suelen ser puntos de mucho interés.
+  \item Las esquinas se consideran puntos de interés invariantes a escala, rotación e iluminación
+  \item Entre algunas aplicaciones se encuentran:
+    \begin{itemize}
+    \item Registro de imágenes
+    \item Reconstrucción de escenas 3D
+    \item Detección de movimiento
+    \item Reconocimiento de objetos
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Detector de esquinas de Harris}
+  Este detector se basa en la autocorrelación de los valores del gradiente en una vencidad de un pixel $(x,y)$. La detección se puede sintetizar en los siguientes pasos:
+  \begin{itemize}
+  \item Obtención de las derivadas parciales
+  \item Obtención de la matriz del segundo momento
+  \item Cálculo de la respuesta de Harris
+  \item Supresión de no máximos
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}\frametitle{El algoritmo RANSAC}
+  Extracción de planos
+\end{frame}
+
+\begin{frame}\frametitle{Ejercicio 09 - Características geométricas}
+\end{frame}

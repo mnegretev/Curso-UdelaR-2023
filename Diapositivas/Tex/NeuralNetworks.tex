@@ -1,21 +1,41 @@
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-05-23 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Redes neuronales (2023-05-23)}
+\section{Redes neuronales}
 
 \begin{frame}\frametitle{Modelo de una neurona}
+  \begin{figure}
+    \centering
+    \includegraphics[height=0.4\textheight]{Figures/NN_Neurona.png}
+  \end{figure}
+  \begin{itemize}
+  \item Una neurona tiene una diferencia de potencial entre el interior y exterior de la membrana de aprox -70 mV
+  \item Los neurotransmisores abren canales para dejar pasar iones positivos o negativos por lo que hacen que el voltaje aumente o disminuya
+  \item La efectividad del neurotransmisor depende de la cantidad de receptores en la membrana
+  \item La cantidad de neurotransmisor se puede considerar como una señal de entrada $x_i$ que se pondera por la cantidad de receptores $w_i$
+  \item Si el efecto de todos los neurotransmisores hace que el voltaje supere los -50 mV aprox, se produce un pulso eléctrico que hace que la neuorona libere neurotransmisor 
+  \end{itemize}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      % \[y = \left\{\begin{array}{cl}
+      %   1 & \textrm{si}\qquad w\cdot x + \theta > 0\\
+      %   0 & \textrm{en otro caso}
+      %   \end{array}\right.\]
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}\frametitle{Ejemplos con compuertas}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Figures/NN_AND_OR.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{Separabilidad lineal}
 \end{frame}
 
 \begin{frame}\frametitle{Entrenamiento de una neurona}
 \end{frame}
-
-\begin{frame}\frametitle{Tarea 15 - Entrenamiento de una neurona}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-05-25 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Redes neuronales (2023-05-25)}
 
 \begin{frame}\frametitle{Backpropagation}
   La red neuronal está definida por la cantidad de neuronas en cada capa $[l_0, l_1, \dots, l_{n-1}, l_n]$:
@@ -33,5 +53,5 @@
   \end{tabular}\right]\]
 \end{frame}
 
-\begin{frame}\frametitle{Práctica 12 - Redes neuronales}
+\begin{frame}\frametitle{Ejercicio 10 - Redes neuronales}
 \end{frame}

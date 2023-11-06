@@ -1,7 +1,4 @@
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-08-24 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Planeación de movimientos (2023-08-24)}
+\section{Planeación de rutas}
 
 \begin{frame}\frametitle{Planeación de movimientos}
   El problema de la planeación de movimientos comprende cuatro tareas principales:
@@ -13,7 +10,6 @@
   \end{itemize}
 \end{frame}
 
-\section{Representación del ambiente (2023-08-24)}
 \begin{frame}\frametitle{Representación del ambiente}
   Un mapa es cualquier representación del ambiente útil en la toma de decisiones.
   \begin{itemize}
@@ -57,7 +53,7 @@
       \begin{itemize}
       \item Celdas blancas: espacio libre.
       \item Celdas negras: espacio con obstáculos.
-        \item Celdas grises: espacio sin obstáculos donde el robot no puede estar debido a su tamaño. 
+      \item Celdas grises: espacio sin obstáculos donde el robot no puede estar debido a su tamaño. 
       \end{itemize}
     \end{column}
   \end{columns}
@@ -956,7 +952,7 @@ while numpy.linalg.norm(nabla) > tol*len(P) and steps < 100000:
   \end{enumerate}
 \end{frame}
 
-
+\section{Evasión de obstáculos}
 \begin{frame}\frametitle{Evasión de obstáculos}
   \begin{itemize}
   \item Hasta el momento se tiene una manera de representar el ambiente, planear una ruta y seguirla
@@ -1093,6 +1089,8 @@ Realice lo siguiente:
   \end{itemize}
 \end{frame}
 
+\section{Localización}
+
 \begin{frame}\frametitle{Localización}
   Existen principalmente dos tipos:
 \[\]
@@ -1132,62 +1130,77 @@ Realice lo siguiente:
   
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-03-23 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Filtro de Kalman Extendido (2023-03-23)}
 \begin{frame}\frametitle{El Filtro de Kalman Extendido}
+  \begin{figure}
+    \centering
+    \includegraphics[height=0.4\textheight]{Figures/EKF1.pdf}
+  \end{figure}
+  \begin{columns}
+    \begin{column}{0.45\textwidth}
+      Modelo de transición de estados:
+      \[\left.
+      \begin{array}{cclc}
+        x_{k+1}      &=& x_k + (\Delta t)v\cos(\theta_k) & + n_{p1}\\
+        y_{k+1}      &=& y_k + (\Delta t)v\sin(\theta_k) & + n_{p2}\\
+        \theta_{k+1} &=& \theta_k + (\Delta t)\omega     & + n_{p3}
+      \end{array}\right\}f(x)
+    \]
+    donde $n_p\in\mathbb{R}^3$ es ruido de proceso que es distribuye normalmente con
+    media cero y matriz de covarianza conocida $Q\in\mathbb{R}^{3\times 3}$
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      Modelo de observación:
+      \[\left.
+        \begin{array}{cclc}
+                 &\vdots& & \\
+        r_{i}    &=& \sqrt{(x_k - x_{oi})^2 + (y_k - y_{oi})^2}   & + n_{m1}\\
+        \phi_{i} &=& atan2(y_k - y_{oi}, x_k - x_{oi}) - \theta_k & + n_{m2}\\
+                 &\vdots& & \\
+      \end{array}\right\}h(x)
+    \]
+    donde $M$ es el número de marcas observadas, $n_m\in\mathbb{R}^{2M}$ es ruido de medición que se distribuye normalmente con media cero y matriz de covarianza conocida $R\in\mathbb{R}^{2M\times 2M}$
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}\frametitle{Algoritmo de estimación del EKF}
+  \begin{figure}
+    \centering
+    \includegraphics[height=0.6\textheight]{Figures/EKF2.png}
+  \end{figure}
+  con:
+  \begin{itemize}
+  \item $P$ : Matriz de covarianza del error de estimación
+  \item $F$ : Jacobiano de $f(x)$
+  \item $H$ : Jacobiano de $h(x)$
+  \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Tarea 07 - Filtro de Kalman Extendido}
+\begin{frame}\frametitle{El EKF como un filtro Bayesiano}
+  \begin{itemize}
+  \item El EKF obtiene una distribución de probabilidad \textit{a posteriori} $P(A|B)$: la probabilidad de que el robot esté en una posición dadas las lecturas de los sensores.
+  \item El modelo de observación representa la verosimilitud $P(B|A)$: la probabilidad de obtener ciertas lecturas dado un cierto estado del robot.
+  \item La estimación dada por $\hat{x}_{k+1}$ es la distribución a priori $P(A)$
+  \item EKF supone una distribución normal, es decir $\hat{x}_{k+1}$ es una variable aleatoria que se distribuye normalmente con media en $f(x_k, u_k)$ y covarianza $Q$
+  \end{itemize}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-03-28 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Filtro de Kalman Extendido (2023-03-28)}
-\begin{frame}\frametitle{Modelo cinemático discreto}
+\begin{frame}\frametitle{Filtros de partículas}
+  \begin{itemize}
+  \item A diferencia del EKF que supone una distribución normal, los filtros de partículas suponen una distribución no paramétrica.
+  \item Se consideran $N$ suposiciones de la posición del robot. A cada suposición $(x,y,\theta)$ se le llama partícula. 
+  \item La distribución \textit{a priori} se calcula realizando simulaciones de movimiento para cada partícula.
+  \item El modelo de observación también se realiza mediante simulaciones de los sensores para cada partículas.
+  \item Para obtener la distribución \textit{a posteriori} se comparan las lecturas simuladas con la lectura del sensor real y se realiza un muestreo aleatorio con reemplazo. Cada partícula tiene una probabilidad de ser muestreada, proporcional a la similitud de su lectura simulada con el sensor real.
+  \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Modelo de observación}
-\end{frame}
-
-\begin{frame}\frametitle{Extracción de marcas}
-\end{frame}
-
-\begin{frame}\frametitle{Obtención de las matrices $Q$ y $R$}
-\end{frame}
-
-% \begin{frame}\frametitle{Práctica 06 - Filtro de Kalman Extendido}
-% \end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-03-30 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Filtro de Partículoas (2023-03-30)}
-  
 \begin{frame}\frametitle{Filtros de Partículas}
   \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{Figures/ParticleFilter1.pdf}
   \end{figure}
 \end{frame}
-
-\begin{frame}\frametitle{Tarea 08 - Conceptos de filtros de partículas}
-  \begin{itemize}
-  \item Ejercicio de remuestreo con reemplazo
-  \item Transformación de posición par desplazamiento de las partículas
-  \end{itemize}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-04-11 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Filtros de partículas (2023-04-11)}
 
 \begin{frame}\frametitle{Simulación del sensor}
 \end{frame}
@@ -1201,28 +1214,10 @@ Realice lo siguiente:
 \begin{frame}\frametitle{Desplazamiento de partículas}
 \end{frame}
 
-\begin{frame}\frametitle{Tarea 09 - Ejercicios de filtros de partículas}
-  \begin{itemize}
-  \item Ejercicio de remuestreo con reemplazo
-  \item Transformación de posición par desplazamiento de las partículas
-  \end{itemize}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%
-%%% 2023-04-13 %%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Filtros de partículas (2023-04-13)}
-
-\begin{frame}\frametitle{Repaso de C++}
-\end{frame}
-
-\begin{frame}\frametitle{La biblioteca \textit{random\_numbers}}
-\end{frame}
-
-\begin{frame}[containsverbatim]\frametitle{Práctica 05 - Localización por filtros de partículas}
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 07 - Localización por filtros de partículas}
 Realice lo siguiente:
   \begin{enumerate}
-  \item Abra el archivo \texttt{catkin\_ws/src/students/src/practice05.cpp} y realice lo siguiente:
+  \item Abra el archivo \texttt{catkin\_ws/src/students/src/assignment07.cpp} y realice lo siguiente:
     \begin{enumerate}
     \item En la función \texttt{get\_initial\_distribution} genere $N$ partículas con pose $(x,y,\theta)$ aleatoria con distribución uniforme. 
     \item Complete la función \texttt{simulate\_particle\_scans} para generar lecturas del láser simuladas dado un mapa y la posición de las partículas. 
@@ -1234,48 +1229,9 @@ Realice lo siguiente:
     \end{enumerate}
   \item Compile el código con el comando \texttt{catkin\_make} (el directorio de trabajo debe ser \texttt{catkin\_ws})
   \item Ejecute la simulación con el comando \texttt{roslaunch bring\_up localization.launch}
-  \item Corra la práctica con el comando \texttt{rosrun students practice05}
+  \item Corra la práctica con el comando \texttt{rosrun students assignment07}
   \item Mueva el robot con la GUI y observe lo que sucede en el visualizador. 
   \item El código debe recompilarse con cada cambio. 
   \end{enumerate}
 \end{frame}
-
-\begin{frame}[containsverbatim]\frametitle{Práctica 05 - Localización por filtros de partículas}
- \textbf{Entregables:}
-  \begin{itemize}
-  \item Código modificado en la rama correspondiente del repositorio en línea.
-  \item Documento escrito con los puntos indicados al inicio del semestre
-  \end{itemize}
-  \textbf{Deadline: } 2023-05-09 al inicio de la clase. 
-\end{frame}
-
-
-
-% %%%%%%%%%%%%%%%%%%%
-% %%% 2023-04-18 %%%%
-% %%%%%%%%%%%%%%%%%%%
-% \section{Creación de mapas (2023-04-18)}
-
-% \begin{frame}\frametitle{Agrupamiento}
-% \end{frame}
-
-% \begin{frame}\frametitle{K-medias}
-% \end{frame}
-
-% \begin{frame}\frametitle{Cuantización vectorial}
-% \end{frame}
-
-% \begin{frame}\frametitle{Tarea 10 - Investigación agrupamiento}
-% \end{frame}
-
-% %%%%%%%%%%%%%%%%%%%
-% %%% 2023-04-20 %%%%
-% %%%%%%%%%%%%%%%%%%%
-% \section{Localización y mapeo simultáneos (2023-04-20)}
-
-% \begin{frame}\frametitle{Localización y mapeo simultáneos}
-% \end{frame}
-
-% \begin{frame}\frametitle{Práctica 8 - SLAM}
-% \end{frame}
 

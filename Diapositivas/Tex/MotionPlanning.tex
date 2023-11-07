@@ -1237,9 +1237,24 @@ return [force_x/len(laser_readings), force_y/len(laser_readings)]
 \end{frame}
 
 \begin{frame}\frametitle{Filtros de Partículas}
+  Un filtro de partículas para localización consta de 5 pasos generales:
+  \begin{enumerate}
+  \item Generar $N$ partículas con $(x,y,\theta)$ aleatorias con distribución uniforme (distribución inicial equivalente a $\hat{x}_0$ en el EKF)
+  \item Mover cada partícula un desplazamiento $(\Delta x, \Delta y, \Delta\theta)$ más ruido Gaussiano (equivalente a estimar $\hat{x}_{k+1} = f(x_k, u_k)$ en el EKF)
+  \item Simular las lecturas del sensor láser para cada partícula (equivalente a predecir las salidas $h(x_k)$ en el EKF)
+  \item Comparar cada lectura simulada con la lectura del sensor real. Las similitudes representan una distribución de probabilidad 
+  \item Remuestrear $N$ partículas con reemplazo usando la distribución anterior, y agregar ruido Gaussiano (equivalente a la actualización de la estimación de $\hat{x}$ en el EKF)
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Filtros de Partículas}
   \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{Figures/ParticleFilter1.pdf}
+    \includegraphics[width=0.30\textwidth]{Figures/ParticleFilter1.pdf}
+    \includegraphics[width=0.30\textwidth]{Figures/ParticleFilter2.pdf}
+    \includegraphics[width=0.30\textwidth]{Figures/ParticleFilter3.pdf}
+    \includegraphics[width=0.31\textwidth]{Figures/ParticleFilter4.pdf}
+    \includegraphics[width=0.30\textwidth]{Figures/ParticleFilter5.pdf}
   \end{figure}
 \end{frame}
 

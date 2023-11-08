@@ -1228,6 +1228,7 @@ return [force_x/len(laser_readings), force_y/len(laser_readings)]
 
 \begin{frame}\frametitle{Filtros de partículas}
   \begin{itemize}
+  \item También son un filtro Bayesiano
   \item A diferencia del EKF que supone una distribución normal, los filtros de partículas suponen una distribución no paramétrica.
   \item Se consideran $N$ suposiciones de la posición del robot. A cada suposición $(x,y,\theta)$ se le llama partícula. 
   \item La distribución \textit{a priori} se calcula realizando simulaciones de movimiento para cada partícula.
@@ -1258,16 +1259,77 @@ return [force_x/len(laser_readings), force_y/len(laser_readings)]
   \end{figure}
 \end{frame}
 
+\begin{frame}\frametitle{Desplazamiento de partículas}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.35\textwidth]{Figures/ParticleFilter2.pdf}
+  \end{figure}
+  \begin{itemize}
+  \item Se puede suponer que todas las partículas se desplazan una cantidad $(\Delta x, \Delta y, \Delta\theta)$ (obtenida mediante odometría) con respecto al sistema del robot
+  \item Para calcular la nueva pose de cada partícula, basta con transformar los desplazamientos al sistema de referencia (giro sobre $Z$ de un ángulo $\theta$)
+  \item Para modelar la incertidumbre del movimiento, a cada partícula se le suma ruido Gaussiano $n$ con media cero y varianza $\sigma_m^2$:
+  \end{itemize}
+  Para cada partícula, hacer:
+  \begin{eqnarray*}
+    x_{k+1} &=& x_k + \Delta x\cos\theta_k - \Delta y\sin\theta_k + n_x\\
+    y_{k+1} &=& y_k + \Delta x\sin\theta_k + \Delta y\cos\theta_k + n_y\\
+    \theta_{k+1} &=& \theta_k  + \Delta\theta + n_{\theta}
+  \end{eqnarray*}
+\end{frame}
+
 \begin{frame}\frametitle{Simulación del sensor}
+  \begin{itemize}
+  \item Se puede simular con técnicas de \textit{ray tracing} a partir de un mapa y una pose del sensor
+  \item Se puede utilizar el paquete \texttt{occupancy\_grid\_utils}. Tiene una biblioteca que simula las lecturas del láser dado:
+    \begin{itemize}
+    \item Un mapa de celdas de ocupación (\texttt{OccupancyGrid})
+    \item Una posición y orientación del sensor (\texttt{Pose}). Esta posición y orientación corresponde con el $(x,y,\theta)$ de cada partícula.
+    \item Especificaciones del sensor a simular. Esto lo obtiene de un mensaje \texttt{LaserScan}
+    \end{itemize}
+  \item Puesto que esta simulación es computacionalmente costosa, solo se simulan \textbf{1 de cada $N$} lecturas del sensor real. 
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.35\textwidth]{Figures/ParticleFilter3.pdf}
+  \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Comparación de simulación con real}
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{Figures/ParticleFilterLaserComparison.pdf}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.6\textwidth}
+      Para obtener una medida de comparación se obtiene una media de diferencias en las distancias:
+      \[\delta = \sum_{i=0}^{M_s - 1}\left|d^r_{Ni} - d^s_i\right|\]
+      \[s = e^{-\delta^2/\sigma^2}\]
+      con:
+      \begin{itemize}
+      \item $d^r_{Ni}$: es la $(Ni)$-ésima lectura de distancia del sensor real
+      \item $d^s_i$: es la $i$-ésima lectura de distancia del sensor simulado (de una partícula)
+      \item $\delta$: media de los valores absolutos de las diferencias
+      \item $\sigma^2$: Varianza del sensor (medida de incertidumbre)
+      \item $s$: medida de similitud entre el sensor real y el sensor simulado
+      \item $M_s$: número de distancias en el sensor simulado ($1/N$ del número de distancias en el sensor real). 
+      \end{itemize}
+      Recuerde que se simularon solo 1 de cada $N$ lecturas del sensor real
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}\frametitle{Remuestreo con reemplazo}
-\end{frame}
-
-\begin{frame}\frametitle{Desplazamiento de partículas}
+  \begin{itemize}
+  \item Las similitudes obtenidas en el paso anterior pueden usarse como distribución de probabilidad si se normalizan para que sumen 1
+  \item La distribución de probabilidad anterior determina la probabilidad de que una partícula sea remuestreada
+  \item Para evitar tener partículas repetidas, a cada partícula remuestreada se le suma ruido Gaussiano
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.35\textwidth]{Figures/ParticleFilter5.pdf}
+  \end{figure}
 \end{frame}
 
 \begin{frame}[containsverbatim]\frametitle{Ejercicio 07 - Localización por filtros de partículas}

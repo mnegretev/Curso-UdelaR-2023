@@ -16,7 +16,7 @@ import math
 from std_msgs.msg import Header
 from sensor_msgs.msg import PointCloud2
 from geometry_msgs.msg import PointStamped, Point
-from custom_msgs.srv import FindObject, FindObjectResponse
+from vision_msgs.srv import RecognizeObject, RecognizeObjectResponse
 
 NAME = "FULL_NAME"
 
@@ -58,7 +58,7 @@ def segment_by_color(img_bgr, points, obj_name):
 def callback_find_object(req):
     global pub_point, img_bgr
     print("Trying to find object: " + req.name)
-    arr = ros_numpy.point_cloud2.pointcloud2_to_array(req.cloud)
+    arr = ros_numpy.point_cloud2.pointcloud2_to_array(req.point_cloud)
     rgb_arr = arr['rgb'].copy()
     rgb_arr.dtype = numpy.uint32
     r,g,b = ((rgb_arr >> 16) & 255), ((rgb_arr >> 8) & 255), (rgb_arr & 255)
@@ -67,15 +67,17 @@ def callback_find_object(req):
     hdr = Header(frame_id='realsense_link', stamp=rospy.Time.now())
     pub_point.publish(PointStamped(header=hdr, point=Point(x=x, y=y, z=z)))
     cv2.circle(img_bgr, (int(r), int(c)), 20, [0, 255, 0], thickness=3)
-    resp = FindObjectResponse()
-    resp.x, resp.y, resp.z = x, y, z
+    resp = RecognizeObjectResponse()
+    resp.recog_object.pose.position.x = x
+    resp.recog_object.pose.position.y = y
+    resp.recog_object.pose.position.z = z
     return resp
 
 def main():
     global pub_point, img_bgr
     print("ASSIGNMENT 08 - " + NAME)
     rospy.init_node("color_segmentation")
-    rospy.Service("/vision/find_object", FindObject, callback_find_object)
+    rospy.Service("/vision/obj_reco/recognize_object", RecognizeObject, callback_find_object)
     pub_point = rospy.Publisher('/detected_object', PointStamped, queue_size=10)
     img_bgr = numpy.zeros((480, 640, 3), numpy.uint8)
     loop = rospy.Rate(10)

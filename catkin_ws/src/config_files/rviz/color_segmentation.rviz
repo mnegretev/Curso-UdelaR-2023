@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /Status1
         - /TF1/Frames1
-        - /DetectedObject1
+        - /GeometricFeatures1/Status1
       Splitter Ratio: 0.5
     Tree Height: 454
   - Class: rviz/Selection
@@ -351,6 +351,15 @@ Visualization Manager:
       Topic: /detected_object
       Unreliable: false
       Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /vision/obj_reco/markers
+      Name: GeometricFeatures
+      Namespaces:
+        line_markers: true
+        plane_markers: true
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -395,9 +404,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.024796485900879
+      Pitch: 1.1047965288162231
       Target Frame: <Fixed Frame>
-      Yaw: 5.568583011627197
+      Yaw: 5.438581466674805
     Saved: ~
 Window Geometry:
   Displays:

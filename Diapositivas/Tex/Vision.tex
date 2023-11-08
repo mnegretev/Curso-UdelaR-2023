@@ -287,7 +287,7 @@ La computación con imágenes tiene mas de 30 años, sin embargo, en los último
     \item Encuentre los índices de los pixeles que pertenecen al rango de color con la función \texttt{findNonZero} de OpenCV.
     \item Utilizando los índices anteriores y la nube de puntos, determine el centroide del objeto con el color seleccionado. 
     \end{enumerate}
-  \item Ejecute la simulación con el comando \texttt{roslaunch bring\_up color\_segmentation.launch }
+  \item Ejecute la simulación con el comando \texttt{roslaunch bring\_up vision\_examples.launch }
   \item Ejecute la práctica con el comando \texttt{rosrun students assignment08.py}
   \item En la pestaña \textit{Simple Tasks} de la GUI, en el campo \textit{Find Object} teclee \texttt{pringles} o \texttt{drink}
   \item En el visualizador debe dibujarse una esfera morada sobre el centro del objeto seleccionado. 
@@ -568,35 +568,53 @@ La computación con imágenes tiene mas de 30 años, sin embargo, en los último
   \end{itemize}
 \end{frame}
 
-
-\begin{frame}\frametitle{Detección de esquinas}
-  Una esquina se puede considerar como un punto donde, en una vecindad $W$, el gradiente tiene dos direcciones dominantes diferentes.
+\begin{frame}\frametitle{Análisis de Componentes Principales}
   \begin{itemize}
-  \item Aunque las esquinas representan un porcentaje muy pequeño de la imagen, suelen ser puntos de mucho interés.
-  \item Las esquinas se consideran puntos de interés invariantes a escala, rotación e iluminación
-  \item Entre algunas aplicaciones se encuentran:
-    \begin{itemize}
-    \item Registro de imágenes
-    \item Reconstrucción de escenas 3D
-    \item Detección de movimiento
-    \item Reconocimiento de objetos
-    \end{itemize}
-  \end{itemize}
+    \item PCA representa datos en un nuevo sistema de coordenadas en que los vectores base siguen modos de mayor varianza en los datos, estas bases se
+      obtienen de los datos en cuestión.
+    \item PCA es un método para simplificar un conjunto de datos multidimensional a dimensiones menores para su analísis, visualización o compresión de
+      datos.
+      \item En la siguiente figura, si se utiliza la matriz de transformación adecuada $Q$, los puntos con respecto al nuevo sistema $X^\prime Y^\prime$ tienen componente en $Y^\prime$ muy pequeña, por lo que se podrían aproximar con una sola dimensión haciendo $Y^\prime = 0$. 
+\end{itemize}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{Figures/PCA1.png}
+\end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Detector de esquinas de Harris}
-  Este detector se basa en la autocorrelación de los valores del gradiente en una vencidad de un pixel $(x,y)$. La detección se puede sintetizar en los siguientes pasos:
+\begin{frame}\frametitle{Análisis de componentes principales}
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \includegraphics[width=\textwidth]{Figures/PCA1.png}
+    \end{column}
+    \begin{column}{0.6\textwidth}
+      La matriz $Q$ se puede obtener con los siguientes pasos:
+      \begin{itemize}
+      \item Obtener la matriz de covarianza $P\in\mathbb{R}^{3\times 3}$ de todos los puntos
+      \item Obtener los vectores propios $[v_1, v_2, v_3]$ de la matriz $P$
+      \item Formar la matriz $Q$ utilizando $v$ como columnas: $Q= [v1\quad v2\quad v3]$
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  Cuando se obtiene PCA para puntos en 3D puede suceder que:
   \begin{itemize}
-  \item Obtención de las derivadas parciales
-  \item Obtención de la matriz del segundo momento
-  \item Cálculo de la respuesta de Harris
-  \item Supresión de no máximos
+  \item Si se tienen tres valores propios grandes, seguramente no se puede reducir la dimensión
+  \item Si se tiene un valor propio pequeño y dos grandes, es probable que se tenga un plano
+  \item Si se tienen dos valores propios pequeños, es probable que se trate de una recta 
   \end{itemize}
 \end{frame}
-
 
 \begin{frame}\frametitle{El algoritmo RANSAC}
-  Extracción de planos
+  \begin{itemize}
+  \item Sirve para ajustar los parámetros de un modelo a partir de un conjunto de observaciones cuando existen datos atípicos (\textit{outliers})
+  \item Los pasos generales son los siguientes:
+    \begin{enumerate}
+    \item Tomar $N$ muestras aleatorias del conjunto de observaciones ($N$ suficiente para ajustar un modelo)
+    \item Obtener los parámetros $\Theta$ del modelo utilizando solo esos $N$ puntos
+    \item Determinar cuántos puntos del conjunto total ajustan razonablemente bien el modelo con parámetros $\Theta$
+    \item Si el número de puntos que ajustaron bien supera un umbral mínimo, se acepta el modelo $\Theta$, si no, se repite el proceso 
+    \end{enumerate}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Ejercicio 09 - Características geométricas}

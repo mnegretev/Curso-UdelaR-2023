@@ -95,10 +95,6 @@
   La rotación $R_{ab}$ está definida en el URDF por el atributo ``rpy'' de la sub etiqueta \texttt{origin} de la etiqueta \texttt{joint} y por la posición de la articulación. La traslación $(dx_{ab}, dy_{ab}, dz_{ab})$ está definida por el atributo ``xyz''. 
 \end{frame}
 
-\begin{frame}\frametitle{Tarea 13 - Cinemática directa}
-  
-\end{frame}
-
 \begin{frame}\frametitle{La cinemática inversa}
   La cinemática inversa consiste en determinar las posiciones que debe tener cada articulación para que el efector final tenga la posición y orientación deseadas.
   \begin{itemize}
@@ -129,43 +125,108 @@
   \end{multicols}
 \end{frame}
 
-\begin{frame}\frametitle{El Jacobiano}
+\begin{frame}\frametitle{IK por Newton-Raphson}
+  La función cuyas raíces se desea encontrar es:
+  \[f(q) = FK(q) - p_d = 0\]
+  Por lo que, sustituyendo $f(x)$ el algoritmo quedaría:
+  \begin{algorithm}[H]
+    \DontPrintSemicolon
+    $q_i \leftarrow q_0$\;
+    \While{$|f(q)| > \epsilon$}
+    {
+       $q_{i+1} \leftarrow q_i - \frac{FK(q_i) - p_d}{\textcolor{red}{\frac{d}{dq}\left(FK(q) - p_d\right)}}$
+    }
+  \end{algorithm}
+  \begin{itemize}
+  \item Sin embargo, dado que $f(q): \mathbb{R}^7\rightarrow \mathbb{R}^6$, no podemos hablar de derivada sino que debemos usar un Jacobiano $J(q)\in\mathbb{R}^{6\times 7}$.
+  \item Newton-Raphson incluye una división de la función entre su derivada, pero no existe la división entre matrices, por lo que debemos multiplicar por la inversa del Jacobiano
+  \item Pero el Jacobiano $J(q)$ no es una matriz cuadrada por lo que \textbf{no tiene inversa}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{La matriz pseudoinversa}
+  Para una matriz $A\in\mathbb{R}^{m\times n}$, la matriz pseudoinversa $A^\dagger$ se puede calcular a partir de la descomposición en valores singulares:
+  \[A = U\left(\begin{array}{cc}S&0\\0&0\end{array}\right) V^T\]
+  donde $U$ y $T$ son ambas matrices ortogonales y $S$ está es una matriz diagonal formada por los valores singulares (positivos) de $A$. Con esta descomposición, la pseudoinversa se puede calcular como:
+  \[A^\dagger = V\left(\begin{array}{cc}S^{-1}&0\\0&0\end{array}\right) U^T\]
+\end{frame}
+
+\begin{frame}\frametitle{La matriz pseudoinversa}
+  La pseudoinversa tiene varias propiedades:
+  \begin{itemize}
+  \item $AA^\dagger A = A$ y  $A^\dagger A A^\dagger = A^\dagger$
+  \item $AA^\dagger$ es simétrica y también $A^\dagger A$
+  \item Si $A$ tiene elementos reales, también $A^\dagger$
+  \item Si $A$ es de rango completo por columnas, es decir $rank(A)=n\leq m$, esto es, $A^T A$ es no singular, entonces:
+    \[A^\dagger = (A^T A)^{-1}A^T\qquad \qquad A^\dagger A = I_n\]
+  \item Si $A$ es de rango completo por renglones, es decir $rank(A)=m\leq n$, esto es, $AA^T$ es no singular, entonces:
+    \[A^\dagger = A^T(A A^T)^{-1}\qquad \qquad A A^\dagger = I_m\]
+  \item La solución al problema de mínimos cuadrados:
+    \[\min_x \left\Vert Ax - y \right\Vert_2 \]
+      está dada por
+      \[x = A^\dagger y\]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{El Jacobiano de un manipulador}
   El Jacobiano es una matriz que relaciona la velocidad articular $\dot{q}$ con la velocidad en el espacio cartesiano $[v\;\omega]^T$ (velocidad lineal y angular):
   \[\dot{p} = \left[\begin{tabular}{c}$v$\\$\omega$\end{tabular}\right] = J \dot{q}
-  \qquad\qquad p = [x,y,z,roll, pitch, yaw] \in \mathbb{R}^6, \quad J\in \mathbb{R}^{6\times 7},\quad q\in \mathbb{R}^7\]
+  \qquad\qquad p =[x,y,z,\phi,\theta,\psi] \in \mathbb{R}^6, \quad J\in \mathbb{R}^{6\times 7},\quad q\in \mathbb{R}^7\]
+  con $(\phi,\theta,\psi)$, los ángulos Roll, Pitch y Yaw respectivamente
   \[J = \left[ \begin{tabular}{ccc}
-      $\frac{\partial p_1}{\partial q_1}$ & $\cdots$ & $\frac{\partial p_1}{\partial q_7}$\\
+    $\dfrac{\partial x}{\partial q_1}$ & $\cdots$ & $\dfrac{\partial x}{\partial q_7}$\\
+    $\dfrac{\partial y}{\partial q_1}$ & $\cdots$ & $\dfrac{\partial y}{\partial q_7}$\\
       $\vdots$ & $\ddots$ & $\vdots$ \\
-      $\frac{\partial p_6}{\partial q_1}$ & $\cdots$ & $\frac{\partial p_6}{\partial q_7}$\\
+      $\dfrac{\partial \psi}{\partial q_1}$ & $\cdots$ & $\dfrac{\partial \psi}{\partial q_7}$\\
     \end{tabular} \right]\]
-  \begin{itemize}
-  \item La matriz $J$ se puede obtener analíticamente, sin embargo, dado el número de grados de libertad, resulta muy complicado
-  \item Se puede obtener aproximando las derivadas parciales con diferencias finitas:
-  \end{itemize}
+\begin{itemize}
+\item La matriz $J$ se puede obtener analíticamente, sin embargo, dado el número de grados de libertad, resulta muy complicado
+\item Se puede obtener aproximando las derivadas parciales con diferencias finitas
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{El Jacobiano de un manipulador}
+  De la definición de derivada parcial:
+  \[\frac{\partial f}{\partial q_i} = \lim_{\Delta q \rightarrow 0}\frac{f(q_1, q_2, \dots, q_i, \dots, q_7) -
+      f(q_1, q_2,\dots,q_i-\Delta q, \dots, q_7)}{\Delta q}\]
+  Podemos aproximar la deriva como:
+  \[\frac{\partial f}{\partial q_i} \approx \frac{f(q_1, q_2, \dots, q_i, \dots, q_7) -
+      f(q_1, q_2,\dots,q_i-\Delta q, \dots, q_7)}{\Delta q}\]
+  O bien
+  \[\frac{\partial f}{\partial q_i} \approx \frac{f(q_1, q_2, \dots, q_i+\Delta q, \dots, q_7) -
+      f(q_1, q_2,\dots,q_i, \dots, q_7)}{\Delta q}\]
+  Promediando ambas aproximaciones:
+  \[\frac{\partial f}{\partial q_i} \approx \frac{f(q_1, q_2, \dots, q_i+\Delta q, \dots, q_7) -
+      f(q_1, q_2,\dots,q_i-\Delta q, \dots, q_7)}{2\Delta q}\]
+\end{frame}
+
+\begin{frame}\frametitle{El Jacobiano del manipulador}
+  Utilizando la aproximación de la derivada parcial, el Jacobiano del manipulador se puede calcular como:
   \[J = \left[\frac{FK(q^1_{+}) -  FK(q^1_{-})}{2\Delta q} \qquad \cdots \qquad \frac{FK(q^7_{+}) -  FK(q^7_{-})}{2\Delta q}\right]\]
+  donde $FK(q)\in\mathbb{R}^6$ es la cinemática directa del manipulador y 
   \begin{eqnarray*}
-    q^i_+ &=& [q_1\quad \dots \quad q_i + \Delta q \quad \dots \quad q_7]\\
-    q^i_- &=& [q_1\quad \dots \quad q_i - \Delta q \quad \dots \quad q_7]
+    q^i_+ &=& [q_1,\quad \dots, \quad q_i + \Delta q, \quad \dots, \quad q_7]\\
+    q^i_- &=& [q_1,\quad \dots, \quad q_i - \Delta q, \quad \dots, \quad q_7]
   \end{eqnarray*}
   con $\Delta q$, un valor lo suficientemente pequeño para una buena aproximación de la derivada. 
+
 \end{frame}
 
 \begin{frame}\frametitle{Cinemática Inversa por Newton-Raphson}
-  Aplicando Newton-Raphson para resolver la ecuación:
+  Sintetizando, aplicamos Newton-Raphson para resolver la ecuación:
   \[FK(q) - p_d = 0\]
   Se tiene:
   \begin{algorithm}[H]
     \DontPrintSemicolon
-    $q_i \leftarrow q_0$ //Una estimación inicial que puede ser la posición articular actual\;
-    $p \leftarrow FK(q_i)$ //La posición cartesiana que tendría el gripper con la estimación inicial\;
+    $q_k \leftarrow q_0$ //Una estimación inicial que puede ser la posición articular actual\;
+    $p \leftarrow FK(q_k)$ //La posición cartesiana que tendría el gripper con la estimación inicial\;
     \While{$|p - p_d| > \epsilon$}
     {
-      $J \leftarrow Jacobiano(q)$     \;
-      $q_{i+1} \leftarrow q_i - J^\dagger (p - p_d)$\;
-      $p \leftarrow FK(q_i)$ 
+      $J \leftarrow Jacobiano(q_k)$     \;
+      $q_{k+1} \leftarrow q_k - J^\dagger (p - p_d)$\;
+      $p \leftarrow FK(q_{k+1})$ 
     }
   \end{algorithm}
-  Puesto que el Jacobiano $J$ no es una matriz cuadrada, no tiene inversa, por lo que se utiliza la matriz pseudoinversa $J^\dagger$. 
   \begin{itemize}
   \item Es importante que las variables angulares siempre estén en el intervalo $(-\pi, \pi]$:
     \begin{itemize}
@@ -179,8 +240,17 @@
 \begin{frame}\frametitle{Práctica 10 - Cinemática Inversa}
 \end{frame}
 
-
 \begin{frame}\frametitle{Modelo dinámico de un manipulador}
+  El modelo dinámico de un manipulador está dado por:
+  \[M(q)\ddot{q} + C(q,\dot{q})\dot{q} + B\dot{q} + G(q) = \tau\]
+  donde
+  \begin{itemize}
+  \item $M(q)$ es la matriz de inercias del manipulador
+  \item $C(q,\dot{q})$ es la matriz de fuerzas de Coriolis
+  \item $B$ es la matriz de coeficientes de fricción
+  \item $G(q)$ es el vector de pares debidos a la gravedad
+  \item $\tau$ es el vector de pares de entrada
+  \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{El control PID}
@@ -213,7 +283,4 @@
   \item El stack \texttt{ros\_control} implementa varias interfaces de hardware. En este curso, la interfaz usada es la que interactúa con la simulación de Gazebo. De este stack, el paquete \texttt{controller\_manager} es importante porque utiliza un archivo \textit{yaml} para lanzar otros nodos que implementan controladores PID. 
   \item El stack \texttt{ros\_controllers} implementa varios algoritmos de control para diferentes tipos de actuadores. 
   \end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Práctia 11 - Control del manipulador}
 \end{frame}
